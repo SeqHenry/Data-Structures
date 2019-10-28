@@ -1,0 +1,157 @@
+/******************************************************************************
+
+    Program for Linked list creation and display the linked list.
+
+*******************************************************************************/
+
+#include <stdio.h>
+#include<stdlib.h>
+
+struct node
+{
+    int data;                                       //data to be feed in the node of data sructure.
+    struct node* next;                              //Self referncial pointer to struct node.
+};
+
+void insertAtEnd(struct node**,int);                //To declare functions to insert at the end of LL
+void insertAtBegn(struct node**,int);               //To declare functions to insert at the beginning of LL
+void insertAtPosi(struct node**,int,int);           //To declare functions to insert at a position of LL
+void deleteFirstNode(struct node**);                //To declare functions to delete the first node of LL
+void deleteAtPosi(struct node**,int);               //To declare functions ro delete at position of LL
+void displayList(struct node *);                    //To display the LL
+
+int main(void)
+{
+    struct node *head=NULL;
+    int choice,val,pos;
+    while(1)
+    {
+        printf("Enter the choice for linked list\n");
+        printf("1:insert at end,2:insert at beginning,3:insert at position,4:delete first node,5:delete at position,6:display list\n");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1:printf("Enter value to be inserted\n");
+                   scanf("%d",&val);
+                   insertAtEnd(&head,val);
+                   break;
+            case 2:printf("Enter value to be inserted\n");
+                   scanf("%d",&val);
+                   insertAtBegn(&head,val);
+                   break;
+            case 3:printf("Enter value to be inserted and the position in linked list\n");
+                   scanf("%d %d",&val,&pos);
+                   insertAtPosi(&head,val,pos);
+                   break;
+            case 4:deleteFirstNode(&head);
+                   break;
+            case 5:printf("Enter the position at which the node has to be deleted\n");
+                   scanf("%d",&pos);
+                   deleteAtPosi(&head,pos);
+                   break;
+            case 6:displayList(head);
+                   break;
+          }
+      }
+}
+    
+        
+ void insertAtEnd(struct node ** p,int val)                //Function to insert node at the end of LL
+ {
+     struct node *temp,*t1;
+     temp=(struct node*)malloc(sizeof(struct node));       //To create temporary node to insert data in LL
+     t1=*p;                                                //save head pointer in temporary variable.
+     temp->data=val;
+     temp->next=NULL;
+     if(*p==NULL)                                          //If LL is empty then save node at first position
+     {
+         *p=temp;
+     }
+     else
+     {
+         while(t1->next!=NULL)                              //traverse till the end of LL
+         {
+            t1=t1->next;
+         }
+         t1->next=temp;                                      //insert node at the end of LL
+     }
+ }
+ 
+ void insertAtBegn(struct node **p,int val)                  //Function to insert node at the beginning of LL
+ {
+     struct node *temp,*t1;
+     temp=(struct node*)malloc(sizeof(struct node));         //To create temporary node to insert data in LL
+     temp->data=val;
+     temp->next=NULL;
+     t1=*p;
+     temp->next=*p;                                          //To insert element at the beginning
+     *p=temp; 
+ }
+ 
+ void insertAtPosi(struct node **p,int val,int pos)          //Function to insert node at a position of LL
+ {
+     struct node *temp,*t1;
+     t1=*p;
+     int i=1;
+     temp=(struct node*)malloc(sizeof(struct node));          //To create temporary node to insert data in LL
+     temp->data=val;
+     temp->next=NULL;    
+     if(pos==1)
+     {
+         insertAtBegn(p,val);                                 //call Function to insert node at the beginning of LL
+         return;    
+     }
+     else
+     {
+         while(i++<(pos-1))                                   //iterate untill the position is located
+         {
+            t1=t1->next;
+         }
+         temp->next=t1->next;                                  //insert the node at that location
+         t1->next=temp;
+     }
+}
+
+void deleteFirstNode(struct node **p)                         //Function to delete the first node of the LL
+{
+    struct node *t1;
+    t1=*p;
+    if (*p==NULL)
+    {
+        return;
+    }
+    *p=(*p)->next;
+    free(t1);
+}
+
+void deleteAtPosi(struct node **p,int pos)                    //Function to delete node at position of LL
+{
+    struct node *temp,*t1;
+    temp=*p;
+    if (pos==1)
+    {
+        deleteFirstNode(p);
+        return;
+    } 
+    int i=1;
+    while(i++<pos)
+    {
+        t1=temp;
+        temp=temp->next;
+    }
+    t1->next=temp->next;
+    free(temp);
+}
+
+ void displayList(struct node*p)                                 //Funtion to display the LL
+ {
+     struct node *t1;
+     t1=p;   
+     while(t1!=NULL)
+     {
+         printf("--->%d",t1->data);
+         t1=t1->next;
+     }
+ }
+ 
+     
