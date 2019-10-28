@@ -1,0 +1,71 @@
+/******************************************************************************
+Program for Queue data structure to enqueue and dequeue data elements on queue.
+
+*******************************************************************************/
+
+#include <stdio.h>
+#define SIZE 5                           //define size for array
+void enqueue(int*,int,int*,int*);
+int dequeue(int*,int*,int*);
+
+int main()
+{
+    int arr[SIZE],choice,ret,val,front,rear;
+    front=rear=-1;
+    while(1)                             //To keep in continous loop.
+    {
+        printf("Enter the choice for enqueue and dequeue on queue\n");
+        printf("-->1:enqueue -->2:dequeue -->3:exit\n");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1:printf("Enter value to be inserted on queue\n");
+                   scanf("%d",&val);
+                   enqueue(arr,val,&front,&rear);
+                   break;
+            case 2:ret=dequeue(arr,&front,&rear);
+                   printf("%d is the value removed from queue\n",ret);
+                   break;
+            case 3:exit(0);             //to terminate the Program
+        }
+    }
+    return 0;
+}
+
+
+void enqueue(int *p,int val,int *f,int *r)//Function to enqueue item
+{
+    if(*r==SIZE-1)
+    {
+        printf("The queue is full\n");
+        return;
+    }
+    p[++*r]=val;                        //to save item on queue.
+    if(*f==-1)                          //if front pointer on lowest limit then increment it
+    {
+        ++*f;
+    }
+}
+
+int dequeue(int*p,int*f,int*r)          //Function to dequeue item 
+{
+    if(*r==-1)
+    {
+        printf("The queue is empty\n");
+        return 0;
+    }
+    
+    int temp=p[*f];                     //save item to be removed from queue in temporary variable
+    p[*f]=0;
+    
+    if(*f==*r)                          //if front and rear are at same locations then initialise it to starting value -1
+    {
+        *f=*r=-1;
+    }
+    else
+    {
+        ++*f;
+    }
+    
+    return temp;
+}
